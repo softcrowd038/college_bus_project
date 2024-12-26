@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class RoomMatesProvider extends ChangeNotifier {
-  Future<List<RoommateProfile>> fetchRoomMateProfile(int roomNumber) async {
-    final url = Uri.parse('$baseUrl/hostel-students/room-partner/$roomNumber');
+  Future<List<BusMateProfile>> fetchBusMateProfile(int busId) async {
+    final url = Uri.parse('$baseUrl/students/bus/$busId');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -14,7 +14,7 @@ class RoomMatesProvider extends ChangeNotifier {
 
         if (jsonResponse.isNotEmpty) {
           final List<dynamic> data = jsonDecode(response.body);
-          return data.map((item) => RoommateProfile.fromJson(item)).toList();
+          return data.map((item) => BusMateProfile.fromJson(item)).toList();
         } else {
           return [];
         }

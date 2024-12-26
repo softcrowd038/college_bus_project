@@ -10,7 +10,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class RoomMates extends StatefulWidget {
   const RoomMates({super.key});
@@ -21,14 +20,14 @@ class RoomMates extends StatefulWidget {
 
 class _RoomMates extends State<RoomMates> {
   StudentProfile? studentProfile;
-  List<RoommateProfile> roommatesList = [];
+  List<BusMateProfile> busmatesList = [];
 
   @override
   void initState() {
     super.initState();
     _checkNetworkConnectivity();
     _fetchStudentProfile().then((_) {
-      _fetchRoomMatesProfile();
+      _fetchBusMatesProfile();
     });
   }
 
@@ -54,54 +53,43 @@ class _RoomMates extends State<RoomMates> {
     });
   }
 
-  Future<void> _fetchRoomMatesProfile() async {
+  Future<void> _fetchBusMatesProfile() async {
     final provider = Provider.of<RoomMatesProvider>(context, listen: false);
     final roomMatesProfile =
-        await provider.fetchRoomMateProfile(studentProfile?.busId ?? 0);
+        await provider.fetchBusMateProfile(studentProfile?.busId ?? 0);
     setState(() {
-      roommatesList = roomMatesProfile;
+      busmatesList = roomMatesProfile;
     });
-  }
-
-  Future<void> _makePhoneCall(String phoneNumber) async {
-    final uri = Uri(scheme: 'tel', path: phoneNumber);
-    if (uri != null) {
-      await launchUrlString(uri.toString());
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Could not launch phone dialer.'),
-        ),
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: roommatesList.map((roommate) {
-          return Padding(
+    return busmatesList.isEmpty
+        ? const Center(child: CircularProgressIndicator())
+        : Padding(
             padding:
                 EdgeInsets.all(MediaQuery.of(context).size.height * 0.0120),
-            child: GestureDetector(
-              onTap: () {
-                _makePhoneCall(roommate.contactNumber);
-              },
-              child: RoomMateColumn(
-                department: roommate.prefferedCourse,
-                imageUrl: roommate.profilePic != null
-                    ? '$baseUrl/student_regi/${roommate.profilePic}'
-                    : 'https://via.placeholder.com/150',
-                name: '${roommate.firstName} ${roommate.lastName}',
+            child: GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: MediaQuery.of(context).size.height * 0.00120,
+                mainAxisSpacing: MediaQuery.of(context).size.height * 0.00120,
+                childAspectRatio: 3 / 4,
               ),
+              itemCount: busmatesList.length,
+              itemBuilder: (context, index) {
+                final roommate = busmatesList[index];
+                return RoomMateColumn(
+                  department: roommate.department,
+                  imageUrl: roommate.profileImage != null
+                      ? '$baseUrl/students/${roommate.profileImage}'
+                      : 'https://via.placeholder.com/150',
+                  name: roommate.name,
+                );
+              },
             ),
           );
-        }).toList(),
-      ),
-    );
   }
 }

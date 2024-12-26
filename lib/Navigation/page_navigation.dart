@@ -166,10 +166,6 @@ class HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    'Bus: ${studentProfile?.busId}',
-                    style: const TextStyle(color: Colors.white),
-                  ),
                 ],
               ),
             ),

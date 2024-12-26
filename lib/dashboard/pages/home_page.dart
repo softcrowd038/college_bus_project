@@ -8,12 +8,12 @@ import 'package:college_bus_project/dashboard/Utils/navigation_provider.dart';
 import 'package:college_bus_project/dashboard/Utils/room_details_provider.dart';
 import 'package:college_bus_project/dashboard/components/room_mates.dart';
 import 'package:college_bus_project/data/api_data.dart';
-import 'package:college_bus_project/login_and_registration/Widgets/custom_button_.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -24,7 +24,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   StudentProfile? studentProfile;
-  RoommateProfile? roommateProfile;
+  BusMateProfile? roommateProfile;
   BusDetails? busDetails;
 
   @override
@@ -66,6 +66,11 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final uri = Uri(scheme: 'tel', path: phoneNumber);
+    await launchUrlString(uri.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -86,8 +91,8 @@ class _MainPageState extends State<MainPage> {
                 _buildStudentProfileSection(),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.0160),
                 _buildbusDetailsSection(),
-                // _buildRoomMatesSection(),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.0160),
+                _buildBusMatesSection(),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.0160),
               ],
             ),
           ),
@@ -239,23 +244,29 @@ class _MainPageState extends State<MainPage> {
                           width: MediaQuery.of(context).size.height * 0.012),
                       Expanded(
                         flex: 1,
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.04,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(
-                                MediaQuery.of(context).size.height * 0.005),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Call Driver',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.014,
-                                fontWeight: FontWeight.bold,
+                        child: GestureDetector(
+                          onTap: () async {
+                            _makePhoneCall(busDetails!.driverContact);
+                          },
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(
+                                MediaQuery.of(context).size.height * 0.005,
                               ),
-                              textAlign: TextAlign.center,
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Call Driver',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: MediaQuery.of(context).size.height *
+                                      0.014,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),
@@ -282,38 +293,38 @@ class _MainPageState extends State<MainPage> {
           );
   }
 
-  // Widget _buildRoomMatesSection() {
-  //   return busDetails == null
-  //       ? Shimmer.fromColors(
-  //           baseColor: Colors.grey.shade300,
-  //           highlightColor: Colors.white,
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Container(
-  //                 height: MediaQuery.of(context).size.height * 0.022,
-  //                 width: MediaQuery.of(context).size.width * 0.4,
-  //                 color: Colors.grey.shade300,
-  //               ),
-  //               const SizedBox(height: 6.0),
-  //               Container(
-  //                 height: MediaQuery.of(context).size.height * 0.012,
-  //                 width: MediaQuery.of(context).size.width * 0.3,
-  //                 color: Colors.grey.shade300,
-  //               ),
-  //             ],
-  //           ),
-  //         )
-  //       : Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           mainAxisAlignment: MainAxisAlignment.start,
-  //           children: [
-  //             Text('Room-Mates',
-  //                 style: TextStyle(
-  //                     fontSize: MediaQuery.of(context).size.height * 0.022,
-  //                     fontWeight: FontWeight.w600)),
-  //             const RoomMates(),
-  //           ],
-  //         );
-  // }
+  Widget _buildBusMatesSection() {
+    return busDetails == null
+        ? Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.022,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  color: Colors.grey.shade300,
+                ),
+                const SizedBox(height: 6.0),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.012,
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  color: Colors.grey.shade300,
+                ),
+              ],
+            ),
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text('Bus-Mates',
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.height * 0.022,
+                      fontWeight: FontWeight.w600)),
+              const RoomMates(),
+            ],
+          );
+  }
 }

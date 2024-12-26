@@ -143,10 +143,10 @@ class _ProfilePage extends State<ProfilePage> {
                                       0.022),
                             ),
                           ),
-                          PersonalInfoRow(
-                              icon: Icons.bus_alert,
-                              title: 'Bus Id',
-                              value: studentProfile?.busId.toString() ?? 'N/A'),
+                          // PersonalInfoRow(
+                          //     icon: Icons.bus_alert,
+                          //     title: 'Bus Id',
+                          //     value: studentProfile?.busId.toString() ?? 'N/A'),
                           PersonalInfoRow(
                               icon: Icons.route,
                               title: 'Route',
@@ -154,8 +154,7 @@ class _ProfilePage extends State<ProfilePage> {
                           PersonalInfoRow(
                               icon: Icons.note,
                               title: 'Pass Validity',
-                              value: formatDate(studentProfile!.passValidity) ??
-                                  'N/A'),
+                              value: formatDate(studentProfile!.passValidity)),
                           PersonalInfoRow(
                               icon: Icons.stop,
                               title: 'Bus Stop',

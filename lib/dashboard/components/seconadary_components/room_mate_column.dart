@@ -19,44 +19,25 @@ class _RoomMateColumnState extends State<RoomMateColumn> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Stack(children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(
-                MediaQuery.of(context).size.height * 0.110),
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.110,
-              width: MediaQuery.of(context).size.height * 0.110,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                      MediaQuery.of(context).size.height * 0.110)),
-              child: Image.network(
-                widget.imageUrl,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.0685,
-            left: MediaQuery.of(context).size.height * 0.0360,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.2),
+        ClipRRect(
+          borderRadius:
+              BorderRadius.circular(MediaQuery.of(context).size.height * 0.110),
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.110,
+            width: MediaQuery.of(context).size.height * 0.110,
+            decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
-                    MediaQuery.of(context).size.height * 0.0720),
-              ),
-              child: Padding(
-                padding:
-                    EdgeInsets.all(MediaQuery.of(context).size.height * 0.008),
-                child: Icon(
-                  Icons.call,
-                  color: Colors.red,
-                  size: MediaQuery.of(context).size.height * 0.0250,
-                ),
-              ),
+                    MediaQuery.of(context).size.height * 0.110)),
+            child: Image.network(
+              widget.imageUrl,
+              fit: BoxFit.cover,
             ),
           ),
-        ]),
+        ),
+        SizedBox(width: MediaQuery.of(context).size.height * 0.012),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(widget.name,
                 style: TextStyle(

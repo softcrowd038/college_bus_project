@@ -3,6 +3,7 @@
 import 'package:college_bus_project/Emergency/Models/profile_model.dart';
 import 'package:college_bus_project/Emergency/Provider/student_profile_provider.dart';
 import 'package:college_bus_project/scanner/Provider/scanner_provider.dart';
+import 'package:college_bus_project/scanner/models/check_in_check_out_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,24 +18,19 @@ class ScannerPage extends StatefulWidget {
 }
 
 class _ScannerPageState extends State<ScannerPage> {
-  bool isCheckedIn = false;
   String uniqueID = "2ddb8d41-76ee-4368-aebc-041ff0d93b78";
   StudentProfile? studentProfile;
   bool isLoading = false;
   DateTime? _lastSmsTimestamp;
+  String? todaysColor;
 
   @override
   void initState() {
     super.initState();
-
-    _fetchStudentProfile().then((_) {
-      getCheckInCheckOutStatus();
-    });
+    _fetchStudentProfile();
   }
 
   void sendEmergencySMS() async {
-    final provider = Provider.of<ScannerProvider>(context, listen: false);
-
     if (_lastSmsTimestamp == null ||
         DateTime.now().difference(_lastSmsTimestamp!) >
             const Duration(seconds: 5)) {
@@ -48,9 +44,7 @@ class _ScannerPageState extends State<ScannerPage> {
 
         String message = '${studentProfile?.name}';
         await Telephony.instance.sendSms(
-            to: emergencyNumber,
-            message:
-                '$message is just ${provider.checkInStatus}  ${provider.checkInStatus == 'checked-in' ? 'in' : 'from'} hostel');
+            to: emergencyNumber, message: '$message is Entered in Bus');
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -65,19 +59,6 @@ class _ScannerPageState extends State<ScannerPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('SMS not sent due to cooldown period')),
       );
-    }
-  }
-
-  Future<void> getCheckInCheckOutStatus() async {
-    try {
-      final provider = Provider.of<ScannerProvider>(context, listen: false);
-      final status =
-          await provider.getCheckoutStatus(studentProfile?.busId ?? 0);
-      setState(() {
-        isCheckedIn = status.status == 'checked-in';
-      });
-    } catch (e) {
-      print('Error fetching check-in status: $e');
     }
   }
 
@@ -125,25 +106,25 @@ class _ScannerPageState extends State<ScannerPage> {
     );
   }
 
-  Future<void> _processScan(int regnum, String checkedstatus) async {
+  Future<void> _processScan(int regnum) async {
     final provider = Provider.of<ScannerProvider>(context, listen: false);
 
     setState(() {
       isLoading = true;
     });
-    print('enter Process scan');
-    print(checkedstatus);
+    print('Enter Process scan');
 
     try {
-      final response = checkedstatus == 'checked-in'
-          ? await provider.postCheckOut(regnum)
-          : await provider.postCheckIn(regnum);
+      final BusScanModel busScanModel = await provider.getBusColor(regnum);
 
-      if (response['status'] == 'success') {
-        await getCheckInCheckOutStatus();
+      if (busScanModel.success) {
+        final String dailyColor = busScanModel.dailyColor;
+        setState(() {
+          todaysColor = dailyColor;
+        });
+        print('Daily Color: $dailyColor');
       } else {
-        _showDialog("Success", response['message'] ?? "Operation failed",
-            isError: true);
+        _showDialog("Error", "Failed to retrieve data", isError: true);
       }
     } catch (e) {
       _showDialog("Error", "An error occurred: $e", isError: true);
@@ -154,7 +135,7 @@ class _ScannerPageState extends State<ScannerPage> {
     }
   }
 
-  void startScanner(String checkedStatus) {
+  void startScanner() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -180,9 +161,9 @@ class _ScannerPageState extends State<ScannerPage> {
 
                 for (final barcode in barcodes) {
                   String qrCode = barcode.rawValue ?? "";
-                  if (qrCode.isNotEmpty && qrCode == uniqueID) {
-                    _processScan(studentProfile?.studentId ?? 0, checkedStatus)
-                        .then((_) {
+                  if (qrCode.isNotEmpty &&
+                      qrCode == studentProfile?.busId.toString()) {
+                    _processScan(studentProfile?.studentId ?? 0).then((_) {
                       sendEmergencySMS();
                     });
                     Navigator.pop(context);
@@ -229,61 +210,47 @@ class _ScannerPageState extends State<ScannerPage> {
                   padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.height * 0.015),
                   child: Text(
-                    'Click below Button to Scan QR CODE to  Check Out and Check In',
+                    'Click below Button to Scan QR CODE',
                     style: TextStyle(
                       color: const Color.fromARGB(255, 161, 161, 161),
                       fontSize: MediaQuery.of(context).size.height * 0.015,
                     ),
                   ),
                 ),
-                Consumer<ScannerProvider>(
-                  builder: (context, provider, child) {
-                    return GestureDetector(
-                      onTap: () {
-                        startScanner(provider.checkInStatus);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                            MediaQuery.of(context).size.height * 0.015),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.050,
-                          width: MediaQuery.of(context).size.width * 0.60,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: provider.checkInStatus == 'checked-in'
-                                  ? const LinearGradient(
-                                      colors: [
-                                        Color.fromARGB(255, 201, 79, 79),
-                                        Color.fromARGB(255, 141, 61, 61),
-                                      ],
-                                    )
-                                  : const LinearGradient(
-                                      colors: [
-                                        Color(0xff7ac94f),
-                                        Color(0xff3d8d4f),
-                                      ],
-                                    )),
-                          child: Center(
-                            child: isLoading
-                                ? const CircularProgressIndicator(
-                                    color: Colors.white)
-                                : Text(
-                                    provider.checkInStatus == 'checked-in'
-                                        ? 'Check Out'
-                                        : 'Check In',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize:
-                                          MediaQuery.of(context).size.height *
-                                              0.02,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ),
-                    );
+                GestureDetector(
+                  onTap: () {
+                    startScanner();
                   },
+                  child: Padding(
+                    padding: EdgeInsets.all(
+                        MediaQuery.of(context).size.height * 0.015),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.050,
+                      width: MediaQuery.of(context).size.width * 0.60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xff7ac94f),
+                              Color(0xff3d8d4f),
+                            ],
+                          )),
+                      child: Center(
+                        child: isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white)
+                            : Text(
+                                'Scan Now',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height * 0.02,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
