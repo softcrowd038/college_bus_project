@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print
 
+import 'package:college_bus_project/Buslocationtracker/Pages/live_location.dart';
 import 'package:college_bus_project/Emergency/Models/profile_model.dart';
 import 'package:college_bus_project/Emergency/Pages/emergency_screen.dart';
 import 'package:college_bus_project/Emergency/Profile/profile_page.dart';
@@ -32,6 +33,7 @@ class HomePageState extends State<HomePage> {
   final List<Widget> _widgetOptions = <Widget>[
     const MainPage(),
     const ScannerPage(),
+    const LiveLocationTracker(),
     const ProfilePage(),
   ];
 
@@ -211,16 +213,18 @@ class HomePageState extends State<HomePage> {
       bottomNavigationBar: CircleNavBar(
         activeIndex: _selectedIndex,
         onTap: _onItemTapped,
-        circleColor: Colors.blue, // Active circle color
+        circleColor: Colors.blue,
         activeIcons: const [
           Icon(Icons.home, color: Colors.white),
           Icon(Icons.qr_code_scanner, color: Colors.white),
+          Icon(Icons.place, color: Colors.white),
           Icon(Icons.person_pin, color: Colors.white),
         ],
         inactiveIcons: const [
           Icon(Icons.home, color: Color.fromARGB(255, 255, 255, 255)),
           Icon(Icons.qr_code_scanner,
               color: Color.fromARGB(255, 255, 255, 255)),
+          Icon(Icons.place, color: Color.fromARGB(255, 255, 255, 255)),
           Icon(Icons.person_pin, color: Color.fromARGB(255, 255, 255, 255)),
         ],
         color: const Color.fromARGB(255, 0, 0, 0),

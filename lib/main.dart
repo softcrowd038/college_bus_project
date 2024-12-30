@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+import 'package:college_bus_project/Buslocationtracker/provider/location_provider.dart';
 import 'package:college_bus_project/Emergency/Provider/student_profile_provider.dart';
 import 'package:college_bus_project/GoogleMapIntegration/Provider/location_provider.dart';
 import 'package:college_bus_project/app/my_app.dart';
@@ -39,6 +40,8 @@ class MyAppProviders extends StatelessWidget {
             create: (_) => BusDetailsProvider()),
         ChangeNotifierProvider<ScannerProvider>(
             create: (_) => ScannerProvider()),
+        ChangeNotifierProvider<LocationAPIProvider>(
+            create: (_) => LocationAPIProvider()),
       ],
       child: MaterialApp(
         title: 'Your App Title',

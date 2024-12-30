@@ -19,6 +19,7 @@ class StudentProfile {
   final String busRoute;
   final String busStop;
   final int busId;
+  final String busName;
   final int routeId;
   final String profileImage;
   final DateTime passValidity;
@@ -36,6 +37,7 @@ class StudentProfile {
     required this.busRoute,
     required this.busStop,
     required this.busId,
+    required this.busName,
     required this.routeId,
     required this.profileImage,
     required this.passValidity,
@@ -54,6 +56,7 @@ class StudentProfile {
         busRoute: json["bus_route"],
         busStop: json["bus_stop"],
         busId: json["bus_id"],
+        busName: json["bus_name"],
         routeId: json["route_id"],
         profileImage: json["profile_image"],
         passValidity: DateTime.parse(json["pass_validity"]),
@@ -72,6 +75,7 @@ class StudentProfile {
         "bus_route": busRoute,
         "bus_stop": busStop,
         "bus_id": busId,
+        "bus_name": busName,
         "route_id": routeId,
         "profile_image": profileImage,
         "pass_validity":

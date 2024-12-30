@@ -2,6 +2,7 @@
 
 import 'package:college_bus_project/Emergency/Models/profile_model.dart';
 import 'package:college_bus_project/Emergency/Provider/student_profile_provider.dart';
+import 'package:college_bus_project/data/api_data.dart';
 import 'package:college_bus_project/scanner/Provider/scanner_provider.dart';
 import 'package:college_bus_project/scanner/models/check_in_check_out_model.dart';
 import 'package:flutter/material.dart';
@@ -48,8 +49,8 @@ class _ScannerPageState extends State<ScannerPage> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(
-                  'Emergency SMS sent to your ${studentProfile?.phoneNumber}')),
+              content:
+                  Text('Boarding SMS sent to ${studentProfile?.phoneNumber}')),
         );
         _lastSmsTimestamp = DateTime.now();
       } catch (e) {
@@ -106,6 +107,122 @@ class _ScannerPageState extends State<ScannerPage> {
     );
   }
 
+  bool _isFaintColor(String? colorHex) {
+    if (colorHex == null || colorHex.trim().isEmpty) {
+      return false;
+    }
+    try {
+      final cleanedHex = colorHex.replaceFirst('#', '').trim();
+
+      final colorValue = int.parse(cleanedHex, radix: 16);
+
+      final r = (colorValue >> 16) & 0xFF;
+      final g = (colorValue >> 8) & 0xFF;
+      final b = colorValue & 0xFF;
+
+      print('$r, $g, $b');
+
+      final brightness = (0.299 * r + 0.587 * g + 0.114 * b);
+
+      return brightness > 100;
+    } catch (e) {
+      print('Error parsing color: $e');
+      return false;
+    }
+  }
+
+  void _showSuccessDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(int.parse(
+                  todaysColor?.replaceFirst('#', '0xff') ?? '0xffffffff')),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.120,
+                  width: MediaQuery.of(context).size.height * 0.120,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          MediaQuery.of(context).size.height * 0.120)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        MediaQuery.of(context).size.height * 0.120),
+                    child: Image.network(
+                      '$baseUrl/students/${studentProfile!.profileImage}',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "${studentProfile?.name}",
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.height * 0.020,
+                    fontWeight: FontWeight.bold,
+                    color: _isFaintColor(todaysColor)
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+                ),
+                Text(
+                  "${studentProfile?.department}",
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.height * 0.012,
+                    color: _isFaintColor(todaysColor)
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Bus Name: ${studentProfile!.busName}',
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.height * 0.016,
+                      color: _isFaintColor(todaysColor)
+                          ? Colors.black
+                          : Colors.white,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                      color:
+                          todaysColor == ' #FF0000' ? Colors.black : Colors.red,
+                      borderRadius: BorderRadius.circular(
+                          MediaQuery.of(context).size.height * 0.0120)),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      "OK",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _processScan(int regnum) async {
     final provider = Provider.of<ScannerProvider>(context, listen: false);
 
@@ -122,7 +239,9 @@ class _ScannerPageState extends State<ScannerPage> {
         setState(() {
           todaysColor = dailyColor;
         });
-        print('Daily Color: $dailyColor');
+        print('Daily Color: $todaysColor');
+
+        _showSuccessDialog("Process scan successful!"); // Show success dialog
       } else {
         _showDialog("Error", "Failed to retrieve data", isError: true);
       }
@@ -161,9 +280,11 @@ class _ScannerPageState extends State<ScannerPage> {
 
                 for (final barcode in barcodes) {
                   String qrCode = barcode.rawValue ?? "";
+                  print(qrCode.runtimeType);
+                  print(studentProfile?.busId.toString().runtimeType);
                   if (qrCode.isNotEmpty &&
-                      qrCode == studentProfile?.busId.toString()) {
-                    _processScan(studentProfile?.studentId ?? 0).then((_) {
+                      barcode.rawValue == studentProfile?.busId.toString()) {
+                    _processScan(studentProfile?.busId ?? 0).then((_) {
                       sendEmergencySMS();
                     });
                     Navigator.pop(context);
