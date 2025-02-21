@@ -48,7 +48,7 @@ class BusMateProfile {
       busId: json['bus_id'] ?? 0,
       busName: json['bus_name'] ?? '',
       routeId: json['route_id'] ?? 0,
-      profileImage: json['profile_image'] ?? null,
+      profileImage: json['profile_image'],
       emergencyContact: json['emergency_contact'] ?? '',
     );
   }

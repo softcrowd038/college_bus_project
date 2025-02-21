@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:college_bus_project/dashboard/components/seconadary_components/icon_widget.dart';
 import 'package:college_bus_project/dashboard/components/seconadary_components/text_widget.dart';
 import 'package:flutter/material.dart';

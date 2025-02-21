@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'package:college_bus_project/GoogleMapIntegration/Provider/location_provider.dart';
 import 'package:college_bus_project/dashboard/components/seconadary_components/text_widget.dart';

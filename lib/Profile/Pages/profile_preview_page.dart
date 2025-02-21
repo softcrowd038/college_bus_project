@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:college_bus_project/Profile/Model/student_profile_model.dart';
 import 'package:college_bus_project/Profile/Services/api_service.dart';
@@ -90,7 +92,7 @@ class _ProfilePreviewPageState extends State<ProfilePreviewPage> {
                     MediaQuery.of(context).size.height * 0.120),
                 child: Image.file(
                   File(
-                    '${studentProfileProvider.profileImage!.path}',
+                    studentProfileProvider.profileImage!.path,
                   ),
                   fit: BoxFit.cover,
                 ),

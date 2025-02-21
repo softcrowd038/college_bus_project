@@ -70,7 +70,7 @@ class _ProfilePage extends State<ProfilePage> {
                               borderRadius: BorderRadius.circular(
                                   MediaQuery.of(context).size.height * 0.120),
                               child: Image.network(
-                                '$baseUrl/students/${studentProfile!.profileImage ?? ''}',
+                                '$baseUrl/students/${studentProfile!.profileImage}',
                                 fit: BoxFit.cover,
                               ),
                             ),

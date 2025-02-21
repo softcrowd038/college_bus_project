@@ -1,9 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:college_bus_project/Emergency/Models/profile_model.dart';
 import 'package:college_bus_project/data/api_data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart'; // Import intl package for date formatting
 
 class StudentProfileProvider extends ChangeNotifier {
   Future<StudentProfile?> fetchStudentProfile(String uuid) async {

@@ -1,5 +1,5 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+// ignore_for_file: deprecated_member_use
+
 import 'package:college_bus_project/Profile/Model/route_model.dart';
 import 'package:college_bus_project/Profile/Model/student_profile_model.dart';
 import 'package:college_bus_project/Profile/Pages/profile_preview_page.dart';
@@ -16,7 +16,7 @@ class BusRouteInfo extends StatefulWidget {
   const BusRouteInfo({super.key});
 
   @override
-  _BusRouteInfoState createState() => _BusRouteInfoState();
+  State<BusRouteInfo> createState() => _BusRouteInfoState();
 }
 
 class _BusRouteInfoState extends State<BusRouteInfo> {

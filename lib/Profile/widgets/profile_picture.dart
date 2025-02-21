@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, deprecated_member_use
 
 import 'dart:io';
 import 'package:college_bus_project/Profile/Model/student_profile_model.dart';

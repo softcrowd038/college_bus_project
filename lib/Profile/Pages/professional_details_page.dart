@@ -165,8 +165,10 @@ class _ProfessionalDetailsPageState extends State<ProfessionalDetailsPage> {
           GestureDetector(
             onTap: () {
               if (_formKey.currentState!.validate()) {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => BusRouteInfo()));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const BusRouteInfo()));
               }
             },
             child: const CustomButton(
