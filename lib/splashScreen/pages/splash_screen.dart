@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Image(
           image: NetworkImage(
-              "https://t4.ftcdn.net/jpg/05/13/32/11/360_F_513321187_ixrphuz3kv5U43Is5t4b478YlocNrVo1.jpg"),
+              "https://t3.ftcdn.net/jpg/02/14/29/22/360_F_214292295_dsMiBAa83bToIrvyKXeXDJyZtaK0S2bv.jpg"),
           height: 250,
           width: 250,
         ),

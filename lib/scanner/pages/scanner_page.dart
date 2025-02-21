@@ -241,7 +241,7 @@ class _ScannerPageState extends State<ScannerPage> {
         });
         print('Daily Color: $todaysColor');
 
-        _showSuccessDialog("Process scan successful!"); // Show success dialog
+        _showSuccessDialog("Process scan successful!");
       } else {
         _showDialog("Error", "Failed to retrieve data", isError: true);
       }

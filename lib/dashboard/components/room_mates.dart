@@ -67,8 +67,7 @@ class _RoomMates extends State<RoomMates> {
     return busmatesList.isEmpty
         ? const Center(child: CircularProgressIndicator())
         : Padding(
-            padding:
-                EdgeInsets.all(MediaQuery.of(context).size.height * 0.0120),
+            padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.019),
             child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -85,7 +84,7 @@ class _RoomMates extends State<RoomMates> {
                   department: roommate.department,
                   imageUrl: roommate.profileImage != null
                       ? '$baseUrl/students/${roommate.profileImage}'
-                      : 'https://via.placeholder.com/150',
+                      : 'https://img.freepik.com/free-vector/man-profile-account-picture_24908-81754.jpg',
                   name: roommate.name,
                 );
               },

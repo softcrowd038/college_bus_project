@@ -14,7 +14,11 @@ class RoomMatesProvider extends ChangeNotifier {
 
         if (jsonResponse.isNotEmpty) {
           final List<dynamic> data = jsonDecode(response.body);
-          return data.map((item) => BusMateProfile.fromJson(item)).toList();
+          print(data);
+
+          return data.map((item) {
+            return BusMateProfile.fromJson(item);
+          }).toList();
         } else {
           return [];
         }

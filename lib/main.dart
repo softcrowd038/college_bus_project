@@ -3,10 +3,14 @@
 import 'package:college_bus_project/Buslocationtracker/provider/location_provider.dart';
 import 'package:college_bus_project/Emergency/Provider/student_profile_provider.dart';
 import 'package:college_bus_project/GoogleMapIntegration/Provider/location_provider.dart';
+import 'package:college_bus_project/Profile/Model/bus_details.dart';
+import 'package:college_bus_project/Profile/Model/route_model.dart';
+import 'package:college_bus_project/Profile/Model/student_profile_model.dart';
 import 'package:college_bus_project/app/my_app.dart';
 import 'package:college_bus_project/dashboard/Utils/navigation_provider.dart';
 import 'package:college_bus_project/dashboard/Utils/room_details_provider.dart';
 import 'package:college_bus_project/dashboard/Utils/room_mates_provider.dart';
+import 'package:college_bus_project/login_and_registration/Model/register_model.dart';
 import 'package:college_bus_project/login_and_registration/Model/user_.dart';
 import 'package:college_bus_project/scanner/Provider/scanner_provider.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +32,15 @@ class MyAppProviders extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<LocationProvider>(
             create: (_) => LocationProvider()),
+        ChangeNotifierProvider<RouteDetails>(create: (_) => RouteDetails()),
+        ChangeNotifierProvider<UserModel>(create: (_) => UserModel()),
         ChangeNotifierProvider<UserCredentials>(
             create: (_) => UserCredentials()),
         ChangeNotifierProvider<NavigationProvider>(
             create: (_) => NavigationProvider()),
         ChangeNotifierProvider<StudentProfileProvider>(
             create: (_) => StudentProfileProvider()),
+        ChangeNotifierProvider<Studentprofile>(create: (_) => Studentprofile()),
         ChangeNotifierProvider<RoomMatesProvider>(
             create: (_) => RoomMatesProvider()),
         ChangeNotifierProvider<BusDetailsProvider>(
@@ -42,6 +49,8 @@ class MyAppProviders extends StatelessWidget {
             create: (_) => ScannerProvider()),
         ChangeNotifierProvider<LocationAPIProvider>(
             create: (_) => LocationAPIProvider()),
+             ChangeNotifierProvider<BusDetails>(
+            create: (_) => BusDetails()),
       ],
       child: MaterialApp(
         title: 'Your App Title',

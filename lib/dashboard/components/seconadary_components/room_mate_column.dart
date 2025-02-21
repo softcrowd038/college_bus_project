@@ -21,13 +21,13 @@ class _RoomMateColumnState extends State<RoomMateColumn> {
       children: [
         ClipRRect(
           borderRadius:
-              BorderRadius.circular(MediaQuery.of(context).size.height * 0.110),
+              BorderRadius.circular(MediaQuery.of(context).size.height * 0.080),
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.110,
-            width: MediaQuery.of(context).size.height * 0.110,
+            height: MediaQuery.of(context).size.height * 0.080,
+            width: MediaQuery.of(context).size.height * 0.080,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
-                    MediaQuery.of(context).size.height * 0.110)),
+                    MediaQuery.of(context).size.height * 0.080)),
             child: Image.network(
               widget.imageUrl,
               fit: BoxFit.cover,

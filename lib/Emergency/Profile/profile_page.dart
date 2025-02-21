@@ -70,7 +70,7 @@ class _ProfilePage extends State<ProfilePage> {
                               borderRadius: BorderRadius.circular(
                                   MediaQuery.of(context).size.height * 0.120),
                               child: Image.network(
-                                '$baseUrl/students/${studentProfile!.profileImage}',
+                                '$baseUrl/students/${studentProfile!.profileImage ?? ''}',
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -151,10 +151,6 @@ class _ProfilePage extends State<ProfilePage> {
                               icon: Icons.route,
                               title: 'Route',
                               value: studentProfile?.busRoute ?? 'N/A'),
-                          PersonalInfoRow(
-                              icon: Icons.note,
-                              title: 'Pass Validity',
-                              value: formatDate(studentProfile!.passValidity)),
                           PersonalInfoRow(
                               icon: Icons.stop,
                               title: 'Bus Stop',

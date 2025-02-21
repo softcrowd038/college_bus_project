@@ -8,6 +8,7 @@ class CommonTextFormfield extends StatelessWidget {
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final Widget? suffixIcon;
+  final Color? fillColor;
   const CommonTextFormfield(
       {super.key,
       required this.label,
@@ -16,7 +17,8 @@ class CommonTextFormfield extends StatelessWidget {
       required this.controller,
       required this.validator,
       required this.onChanged,
-      required this.suffixIcon});
+      required this.suffixIcon,
+      required this.fillColor});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class CommonTextFormfield extends StatelessWidget {
           color: Colors.black,
           fontSize: MediaQuery.of(context).size.height * 0.016),
       decoration: InputDecoration(
-          fillColor: const Color.fromARGB(255, 255, 255, 255),
+          fillColor: fillColor,
           filled: true,
           border: const UnderlineInputBorder(
             borderSide: BorderSide(

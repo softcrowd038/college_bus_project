@@ -22,7 +22,6 @@ class StudentProfile {
   final String busName;
   final int routeId;
   final String profileImage;
-  final DateTime passValidity;
   final String emergencyContact;
 
   StudentProfile({
@@ -40,7 +39,6 @@ class StudentProfile {
     required this.busName,
     required this.routeId,
     required this.profileImage,
-    required this.passValidity,
     required this.emergencyContact,
   });
 
@@ -59,7 +57,6 @@ class StudentProfile {
         busName: json["bus_name"],
         routeId: json["route_id"],
         profileImage: json["profile_image"],
-        passValidity: DateTime.parse(json["pass_validity"]),
         emergencyContact: json["emergency_contact"],
       );
 
@@ -78,8 +75,6 @@ class StudentProfile {
         "bus_name": busName,
         "route_id": routeId,
         "profile_image": profileImage,
-        "pass_validity":
-            "${passValidity.year.toString().padLeft(4, '0')}-${passValidity.month.toString().padLeft(2, '0')}-${passValidity.day.toString().padLeft(2, '0')}",
         "emergency_contact": emergencyContact,
       };
 }

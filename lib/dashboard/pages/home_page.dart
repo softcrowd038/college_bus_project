@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, unrelated_type_equality_checks
+// ignore_for_file: use_build_context_synchronously, unrelated_type_equality_checks, deprecated_member_use
 
 import 'package:college_bus_project/Emergency/Models/profile_model.dart';
 import 'package:college_bus_project/Emergency/Provider/student_profile_provider.dart';
@@ -133,7 +133,9 @@ class _MainPageState extends State<MainPage> {
                 borderRadius: BorderRadius.circular(
                     MediaQuery.of(context).size.height * 0.110),
                 child: Image.network(
-                  '$baseUrl/students/${studentProfile?.profileImage}',
+                  studentProfile?.profileImage != null
+                      ? '$baseUrl/students/${studentProfile?.profileImage}'
+                      : 'https://img.freepik.com/free-vector/man-profile-account-picture_24908-81754.jpg',
                   height: MediaQuery.of(context).size.height * 0.110,
                   width: MediaQuery.of(context).size.height * 0.110,
                   fit: BoxFit.cover,
