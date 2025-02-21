@@ -128,7 +128,6 @@ class StudentApiService {
           sharedPreferences.setString('busid', busId);
           sharedPreferences.setString('busname', busName);
 
-          // Update student profile with bus details
           studentProfile.setbusId(busId);
           studentProfile.setbusName(busName);
 
@@ -144,5 +143,59 @@ class StudentApiService {
       print('Error fetching bus details: $e');
     }
     return [];
+  }
+
+  Future<void> submitPassData(
+      String? studentId,
+      String? studentName,
+      String? busname,
+      String? routeName,
+      String? selectedPlan,
+      String? selectedDate,
+      String? selectedPrice,
+      BuildContext context) async {
+    if (selectedPlan == null || selectedDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a plan and issue date')),
+      );
+      return;
+    }
+
+    final Map<String, dynamic> passData = {
+      "student_id": studentId,
+      "student_name": studentName,
+      "bus_name": busname,
+      "route_name": routeName,
+      "plan": selectedPlan,
+      "price": selectedPrice.toString(),
+      "issue_date": selectedDate,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse("http://192.168.1.21:8090/api/pass"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(passData),
+      );
+
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Pass submitted successfully!')),
+        );
+      } else {
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+                  Text('Failed to submit pass: ${responseData['message']}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
 }

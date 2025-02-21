@@ -5,12 +5,14 @@ import 'package:college_bus_project/Emergency/Models/profile_model.dart';
 import 'package:college_bus_project/Emergency/Pages/emergency_screen.dart';
 import 'package:college_bus_project/Emergency/Profile/profile_page.dart';
 import 'package:college_bus_project/Emergency/Provider/student_profile_provider.dart';
+import 'package:college_bus_project/Profile/Pages/bus_pass_details.dart';
 import 'package:college_bus_project/dashboard/pages/home_page.dart';
 import 'package:college_bus_project/data/api_data.dart';
 import 'package:college_bus_project/login_and_registration/Services/api_service.dart';
 import 'package:college_bus_project/scanner/pages/scanner_page.dart';
 import 'package:flutter/material.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -168,6 +170,19 @@ class HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Text(
+                    '${studentProfile?.collegeName}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w100,
+                        fontSize: MediaQuery.of(context).size.height * 0.014),
+                  ),
+                  Text(
+                    '${studentProfile?.department}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w100,
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.height * 0.014),
+                  ),
                 ],
               ),
             ),
@@ -197,6 +212,16 @@ class HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const ProfilePage()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(FontAwesomeIcons.ticket),
+              title: const Text('My Pass'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const BusPassDetailspage()));
               },
             ),
             const Divider(),

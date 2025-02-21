@@ -1,15 +1,14 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-import 'package:college_bus_project/Emergency/Models/profile_model.dart';
+import 'package:college_bus_project/Profile/Model/get_pass_details.dart';
 import 'package:college_bus_project/data/api_data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class StudentProfileProvider extends ChangeNotifier {
-  Future<StudentProfile?> fetchStudentProfile(String uuid) async {
-    final url = Uri.parse('$baseUrl/students/get/$uuid');
-
+class StudentPassProvider extends ChangeNotifier {
+  Future<BusPassDetails?> fetchBusPassDetails(String studentId) async {
+    final url = Uri.parse('$baseUrl/pass/$studentId');
     try {
       final response = await http.get(url);
 
@@ -17,9 +16,9 @@ class StudentProfileProvider extends ChangeNotifier {
         List<dynamic> jsonResponse = json.decode(response.body);
 
         if (jsonResponse.isNotEmpty) {
-          return StudentProfile.fromJson(jsonResponse[0]);
+          return BusPassDetails.fromJson(jsonResponse[0]);
         } else {
-          print("No student profile found for UUID: $uuid");
+          print("No student profile found for UUID: $studentId");
           return null;
         }
       } else {
