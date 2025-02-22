@@ -50,7 +50,7 @@ dependencies:
   circle_nav_bar: ^2.2.0
   shimmer:
   telephony:
-  shared_preferences:
+  shared_preferences: ^2.5.2
   intl: ^0.20.2
   image_picker: ^1.1.2
   dropdown_button2: ^2.3.9
@@ -69,6 +69,12 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: "^0.14.3"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.jpg"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
