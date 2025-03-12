@@ -14,10 +14,10 @@ class StudentProfileProvider extends ChangeNotifier {
       final response = await http.get(url);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        List<dynamic> jsonResponse = json.decode(response.body);
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
 
         if (jsonResponse.isNotEmpty) {
-          return StudentProfile.fromJson(jsonResponse[0]);
+          return StudentProfile.fromJson(jsonResponse);
         } else {
           print("No student profile found for UUID: $uuid");
           return null;

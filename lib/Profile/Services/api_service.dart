@@ -6,6 +6,7 @@ import 'package:college_bus_project/Navigation/page_navigation.dart';
 import 'package:college_bus_project/Profile/Model/bus_details.dart';
 import 'package:college_bus_project/Profile/Model/route_model.dart';
 import 'package:college_bus_project/Profile/Model/student_profile_model.dart';
+import 'package:college_bus_project/data/api_data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
@@ -32,7 +33,7 @@ class StudentApiService {
       await fetchBusDetails(context, studentProfile.routeId);
     }
 
-    final Uri url = Uri.parse('http://192.168.1.21:8090/api/students');
+    final Uri url = Uri.parse('$baseUrl/students');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -88,7 +89,7 @@ class StudentApiService {
   }
 
   Future<List<RouteDetails>> fetchBusRoutes() async {
-    final apiUrl = Uri.parse('http://192.168.1.21:8090/api/routes');
+    final apiUrl = Uri.parse('$baseUrl/routes');
     try {
       final response = await http.get(apiUrl);
 
@@ -112,8 +113,7 @@ class StudentApiService {
       return [];
     }
 
-    final apiUrl =
-        Uri.parse('http://192.168.1.21:8090/api/buses/buses-by-route/$routeId');
+    final apiUrl = Uri.parse('$baseUrl/buses/buses-by-route/$routeId');
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final studentProfile = Provider.of<Studentprofile>(context, listen: false);
 
@@ -173,7 +173,7 @@ class StudentApiService {
 
     try {
       final response = await http.post(
-        Uri.parse("http://192.168.1.21:8090/api/pass"),
+        Uri.parse("$baseUrl/pass"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(passData),
       );
