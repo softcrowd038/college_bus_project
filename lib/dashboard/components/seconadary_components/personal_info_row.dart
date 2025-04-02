@@ -57,7 +57,10 @@ class _PersonalInfoRow extends State<PersonalInfoRow> {
               ),
             ],
           ),
-          Text(widget.value)
+          SizedBox(
+            width: MediaQuery.of(context).size.height * 0.028,
+          ),
+          Expanded(child: Text(widget.value))
         ],
       ),
     );

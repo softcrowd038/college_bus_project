@@ -170,11 +170,13 @@ class HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    '${studentProfile?.collegeName}',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w100,
-                        fontSize: MediaQuery.of(context).size.height * 0.014),
+                  Expanded(
+                    child: Text(
+                      '${studentProfile?.collegeName}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w100,
+                          fontSize: MediaQuery.of(context).size.height * 0.014),
+                    ),
                   ),
                   Text(
                     '${studentProfile?.department}',
