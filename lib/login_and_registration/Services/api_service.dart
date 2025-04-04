@@ -7,6 +7,7 @@ import 'package:college_bus_project/Navigation/page_navigation.dart';
 import 'package:college_bus_project/Profile/Pages/personal_info_page.dart';
 import 'package:college_bus_project/data/api_data.dart';
 import 'package:college_bus_project/login_and_registration/pages/login_registration.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -102,6 +103,9 @@ class ApiService {
         await sharedPreferences.setString('auth_token', responseBody['token']);
         await sharedPreferences.setString('user_uuid', responseBody['uuid']);
         await sharedPreferences.setString('email', email);
+
+        // final jwt = JWT.decode(responseBody['token']);
+        // await sharedPreferences.setString('student_id', jwt.payload[]);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('You logged in successfully')),

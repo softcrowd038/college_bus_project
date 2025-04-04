@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 class StudentPassProvider extends ChangeNotifier {
   Future<BusPassDetails?> fetchBusPassDetails(String studentId) async {
+    print("student Id: $studentId");
     final url = Uri.parse('$baseUrl/pass/$studentId');
     try {
       final response = await http.get(url);

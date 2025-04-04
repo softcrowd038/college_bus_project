@@ -5,7 +5,6 @@ import 'package:college_bus_project/Emergency/Models/profile_model.dart';
 import 'package:college_bus_project/Emergency/Pages/emergency_screen.dart';
 import 'package:college_bus_project/Emergency/Profile/profile_page.dart';
 import 'package:college_bus_project/Emergency/Provider/student_profile_provider.dart';
-import 'package:college_bus_project/Profile/Pages/bus_pass_details.dart';
 import 'package:college_bus_project/dashboard/pages/home_page.dart';
 import 'package:college_bus_project/data/api_data.dart';
 import 'package:college_bus_project/login_and_registration/Services/api_service.dart';
@@ -18,6 +17,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telephony/telephony.dart';
 import 'package:college_bus_project/GoogleMapIntegration/Provider/location_provider.dart';
+
+import '../Profile/Pages/bus_pass_details.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

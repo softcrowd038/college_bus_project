@@ -34,22 +34,30 @@ class _BusPassDetailspageState extends State<BusPassDetailspage> {
     final uuid = sharedPreferences.getString('user_uuid');
     final provider =
         Provider.of<StudentProfileProvider>(context, listen: false);
-    studentProfile = await provider.fetchStudentProfile(uuid!);
+    print(uuid);
+    studentProfile = await provider.fetchStudentProfile(uuid);
   }
 
   Future<void> _fetchBusPassDetails() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    final uuid = sharedPreferences.getString('student_id');
+    final uuid = sharedPreferences.getString('user_uuid');
     final provider = Provider.of<StudentPassProvider>(context, listen: false);
+    final passProvider =
+        Provider.of<StudentProfileProvider>(context, listen: false);
+    print(uuid);
+    studentProfile = await passProvider.fetchStudentProfile(uuid);
 
-    if (uuid != null) {
-      final profile = await provider.fetchBusPassDetails(uuid);
+    if (uuid != null && studentProfile != null) {
+      print(studentProfile!.studentId);
+      final profile = await provider
+          .fetchBusPassDetails(studentProfile!.studentId.toString());
 
       setState(() {
         busPassDetails = profile;
         isLoading = false;
       });
     } else {
+      print("Either UUID or studentProfile is null");
       setState(() {
         isLoading = false;
       });
@@ -72,33 +80,32 @@ class _BusPassDetailspageState extends State<BusPassDetailspage> {
         backgroundColor: Colors.white,
         title: isLoading
             ? const Center(child: Text(''))
-            : busPassDetails == null
-                ? const Center(child: Text("No bus pass details available"))
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            if (busPassDetails!.status != 'Active') {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BusPassPage()));
-                            } else {
-                              return;
-                            }
-                          },
-                          child: Text(
-                            'create pass',
-                            style: TextStyle(
-                                color: busPassDetails!.status != 'Active'
-                                    ? Colors.blue
-                                    : Colors.grey,
-                                fontWeight: FontWeight.w500),
-                          ))
-                    ],
-                  ),
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        if (busPassDetails == null ||
+                            busPassDetails?.status != 'Active') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const BusPassPage()));
+                        } else {
+                          return;
+                        }
+                      },
+                      child: Text(
+                        'create pass',
+                        style: TextStyle(
+                            color: busPassDetails == null ||
+                                    busPassDetails!.status != 'Active'
+                                ? Colors.blue
+                                : Colors.grey,
+                            fontWeight: FontWeight.w500),
+                      ))
+                ],
+              ),
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class StudentProfileProvider extends ChangeNotifier {
-  Future<StudentProfile?> fetchStudentProfile(String uuid) async {
+  Future<StudentProfile?> fetchStudentProfile(String? uuid) async {
     final url = Uri.parse('$baseUrl/students/get/$uuid');
 
     try {
